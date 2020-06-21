@@ -1,5 +1,6 @@
 #include <iostream>
 #include <array>
+#include "test_misc.h"
 
 using namespace std;
 struct ArrElement {
@@ -13,10 +14,13 @@ struct ArrElement {
 		cout << "construct 22222\n";
 	}
 };
-int main(int argc, char* argv[]) {
+void test1() {
 	std::array<ArrElement, 5> arr{};
 	for (auto& it : arr) {
 		std::cout << it.value << std::endl;
 	}
+}
+int main(int argc, char* argv[]) {
+	TestEchoServerMultiple(argc, argv);
 	return 0;
 }
