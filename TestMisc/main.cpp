@@ -21,6 +21,6 @@ void test1() {
 	}
 }
 int main(int argc, char* argv[]) {
-	TestEchoServerMultiple(argc, argv);
+	TestThreadPoolOne2One(argc, argv);
 	return 0;
 }

@@ -3,3 +3,4 @@
 
 void TestThreadPool();
 void TestEchoServerMultiple(int argc, char* argv[]);
+void TestThreadPoolOne2One(int argc, char* argv[]);

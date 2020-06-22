@@ -4,49 +4,51 @@
 using namespace std;
 using asio::ip::tcp;
 
-class AsioThreadContext {
-public:
-	AsioThreadContext() :work_guard_(asio::make_work_guard(io_context_)){
-		thread_ = std::make_unique<std::thread>([&] {
-			io_context_.run();
-			}
-		);
-	}
-	~AsioThreadContext() {
-		io_context_.stop();
-		thread_->join();
-	}
-	template<class F>
-	void Enqueue(F&& f) {
-		asio::post(io_context_, f);
-	}
-	asio::io_context& GetContext() {
-		return io_context_;
-	}
-private:
-	asio::io_context io_context_;
-	std::unique_ptr<std::thread> thread_;
-
-	typedef asio::io_context::executor_type ExecutorType;
-	asio::executor_work_guard<ExecutorType> work_guard_;
-};
-class AsioThreadPool {
-public:
-	AsioThreadPool(size_t thread_num) {
-		for (size_t i = 0; i < thread_num; i++) {
-			thread_pool_.emplace_back(AsioThreadContext());
-		}
-	}
-	template<class F>
-	void Enqueue(F&& f, int index) {
-		thread_pool_[index].Enqueue(f);
-	}
-	asio::io_context& GetContext(int index) {
-		return thread_pool_[index].GetContext();
-	}
-private:
-	std::vector<AsioThreadContext> thread_pool_;
-};
+//class AsioThreadContext {
+//public:
+//	AsioThreadContext() :work_guard_(asio::make_work_guard(io_context_)){
+//		thread_ = std::make_unique<std::thread>([&] {
+//			io_context_.run();
+//			}
+//		);
+//	}
+//	~AsioThreadContext() {
+//		io_context_.stop();
+//		thread_->join();
+//	}
+//	template<class F>
+//	void Enqueue(F&& f) {
+//		asio::post(io_context_, f);
+//	}
+//	asio::io_context& GetContext() {
+//		return io_context_;
+//	}
+//public:
+//	asio::io_context io_context_;
+//	std::unique_ptr<std::thread> thread_;
+//
+//	typedef asio::io_context::executor_type ExecutorType;
+//	asio::executor_work_guard<ExecutorType> work_guard_;
+//};
+//class AsioThreadPool {
+//public:
+//	AsioThreadPool(size_t thread_num) {
+//		for (size_t i = 0; i < thread_num; i++) {
+//			//thread_pool_.emplace_back(std::make_unique<AsioThreadContext>());
+//		}
+//	}
+//	template<class F>
+//	void Enqueue(F&& f, int index) {
+//		//thread_pool_[index]->Enqueue(f);
+//	}
+//	asio::io_context& GetContext(int index) {
+//		asio::io_context xxx;
+//		return xxx;
+//		//return thread_pool_[index]->GetContext();
+//	}
+//private:
+//	//std::vector<std::unique_ptr<AsioThreadContext>> thread_pool_;
+//};
 
 
 class session
@@ -66,6 +68,7 @@ public:
 private:
 	void do_read()
 	{
+		std::cout << "do_read:thread id:" << std::this_thread::get_id() << endl;
 		auto self(shared_from_this());
 		socket_.async_read_some(asio::buffer(data_, max_length),
 			[this, self](std::error_code ec, std::size_t length)
@@ -79,6 +82,7 @@ private:
 
 	void do_write(std::size_t length)
 	{
+		std::cout << "do_write:thread id:" << std::this_thread::get_id() << endl;
 		auto self(shared_from_this());
 		asio::async_write(socket_, asio::buffer(data_, length),
 			[this, self](std::error_code ec, std::size_t /*length*/)
@@ -95,15 +99,16 @@ private:
 	char data_[max_length];
 };
 
+asio::io_context  ctx1;
+asio::io_context  ctx2;
 class server
 {
 public:
-	server(asio::io_context& io_context, short port, AsioThreadPool& pool)
-		: acceptor_(pool.GetContext(0), tcp::endpoint(tcp::v4(), port)), pool_(pool)
+	server(asio::io_context& io_context, short port)
+		: acceptor_(io_context, tcp::endpoint(tcp::v4(), port))
 	{
-		pool_.Enqueue([this] {
-			do_accept();
-			}, 0);
+		std::cout << "do_accept:thread id:" << std::this_thread::get_id() << endl;
+		do_accept();
 	}
 
 private:
@@ -112,21 +117,27 @@ private:
 		acceptor_.async_accept(
 			[this](std::error_code ec, tcp::socket socket)
 			{
+				std::cout << "do_accept:thread id:" << std::this_thread::get_id() << endl;
 				if (!ec)
 				{
-					pool_.Enqueue([sk = std::move(socket)]{
-						std::make_shared<session>(sk)->start();
-						}, 1);
+					auto sk = new session(std::move(socket));
+					asio::post(ctx2, [=]{
+						std::shared_ptr<session>(sk)->start();
+						});
 				}
+
 				do_accept();
 			});
 	}
 
 	tcp::acceptor acceptor_;
-	AsioThreadPool& pool_;
 };
-void TestThreadPoolOne2One() {
-	AsioThreadPool pool(2);
-
-	server s(io_context, std::atoi(argv[1]));
+void TestThreadPoolOne2One(int argc, char* argv[]) {
+	std::thread t1([] {
+		ctx1.run();
+		});
+	std::thread t2([] {
+		ctx2.run();
+		});
+	server s(ctx1, std::atoi(argv[1]));
 }
