@@ -107,21 +107,23 @@ public:
 	server(asio::io_context& io_context, short port)
 		: acceptor_(io_context, tcp::endpoint(tcp::v4(), port))
 	{
-		std::cout << "do_accept:thread id:" << std::this_thread::get_id() << endl;
 		do_accept();
 	}
 
 private:
 	void do_accept()
 	{
+		std::cout << "do_accept:thread id:" << std::this_thread::get_id() << endl;
 		acceptor_.async_accept(
 			[this](std::error_code ec, tcp::socket socket)
 			{
-				std::cout << "do_accept:thread id:" << std::this_thread::get_id() << endl;
+				std::cout << "async_accept:thread id:" << std::this_thread::get_id() << endl;
 				if (!ec)
 				{
 					auto sk = new session(std::move(socket));
 					asio::post(ctx2, [=]{
+
+						std::cout << "start session:thread id:" << std::this_thread::get_id() << endl;
 						std::shared_ptr<session>(sk)->start();
 						});
 				}
@@ -133,11 +135,24 @@ private:
 	tcp::acceptor acceptor_;
 };
 void TestThreadPoolOne2One(int argc, char* argv[]) {
+	typedef asio::io_context::executor_type ExecutorType;
+	asio::executor_work_guard<ExecutorType> work_guard_1 = asio::make_work_guard(ctx1);
+	asio::executor_work_guard<ExecutorType> work_guard_2 = asio::make_work_guard(ctx2);
 	std::thread t1([] {
+		std::cout << "t1:thread id:" << std::this_thread::get_id() << endl;
 		ctx1.run();
+		std::cout << "t1 end\n";
 		});
 	std::thread t2([] {
+		std::cout << "t2:thread id:" << std::this_thread::get_id() << endl;
 		ctx2.run();
+		std::cout << "t1 end\n";
 		});
 	server s(ctx1, std::atoi(argv[1]));
+
+	std::this_thread::sleep_for(std::chrono::seconds(100));
+	ctx1.stop();
+	ctx2.stop();
+	t1.join();
+	t2.join();
 }
