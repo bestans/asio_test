@@ -114,22 +114,36 @@ private:
 	void do_accept()
 	{
 		std::cout << "do_accept:thread id:" << std::this_thread::get_id() << endl;
-		acceptor_.async_accept(
-			[this](std::error_code ec, tcp::socket socket)
+		acceptor_.async_accept(ctx2, [this](std::error_code ec, tcp::socket socket)
+		{
+			std::cout << "async_accept:thread id:" << std::this_thread::get_id() << endl;
+			if (!ec)
 			{
-				std::cout << "async_accept:thread id:" << std::this_thread::get_id() << endl;
-				if (!ec)
-				{
-					auto sk = new session(std::move(socket));
-					asio::post(ctx2, [=]{
+				auto sk = new session(std::move(socket));
+				asio::post(ctx2, [=] {
+					std::cout << "start session:thread id:" << std::this_thread::get_id() << endl;
+					std::shared_ptr<session>(sk)->start();
+					});
+			}
 
-						std::cout << "start session:thread id:" << std::this_thread::get_id() << endl;
-						std::shared_ptr<session>(sk)->start();
-						});
-				}
+			do_accept();
+		});
+		//acceptor_.async_accept(
+		//	[this](std::error_code ec, tcp::socket socket)
+		//	{
+		//		std::cout << "async_accept:thread id:" << std::this_thread::get_id() << endl;
+		//		if (!ec)
+		//		{
+		//			auto sk = new session(std::move(socket));
+		//			asio::post(ctx2, [=]{
 
-				do_accept();
-			});
+		//				std::cout << "start session:thread id:" << std::this_thread::get_id() << endl;
+		//				std::shared_ptr<session>(sk)->start();
+		//				});
+		//		}
+
+		//		do_accept();
+		//	});
 	}
 
 	tcp::acceptor acceptor_;
