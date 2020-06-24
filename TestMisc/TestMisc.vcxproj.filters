@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\asio_example">
+      <UniqueIdentifier>{26e37a2e-e464-4518-85d4-e77bc1ea224c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\asio_example\excutor">
+      <UniqueIdentifier>{9c761cdd-b52f-414b-9073-c54bbe2ad427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\asio_example\timer">
+      <UniqueIdentifier>{8846f835-a7b6-4a70-abea-4ac6f74d8a6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\asio_example\timeout">
+      <UniqueIdentifier>{fb8b3d00-8f27-4a31-9ae1-5396a94f66f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,6 +38,42 @@
     </ClCompile>
     <ClCompile Include="echo_server_one_to_one.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\executors\actor.cpp">
+      <Filter>源文件\asio_example\excutor</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\executors\bank_account_1.cpp">
+      <Filter>源文件\asio_example\excutor</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\executors\bank_account_2.cpp">
+      <Filter>源文件\asio_example\excutor</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\executors\fork_join.cpp">
+      <Filter>源文件\asio_example\excutor</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\executors\pipeline.cpp">
+      <Filter>源文件\asio_example\excutor</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\executors\priority_scheduler.cpp">
+      <Filter>源文件\asio_example\excutor</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\timers\time_t_timer.cpp">
+      <Filter>源文件\asio_example\timer</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\timeouts\async_tcp_client.cpp">
+      <Filter>源文件\asio_example\timeout</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\timeouts\blocking_tcp_client.cpp">
+      <Filter>源文件\asio_example\timeout</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\timeouts\blocking_token_tcp_client.cpp">
+      <Filter>源文件\asio_example\timeout</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\timeouts\blocking_udp_client.cpp">
+      <Filter>源文件\asio_example\timeout</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\timeouts\server.cpp">
+      <Filter>源文件\asio_example\timeout</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

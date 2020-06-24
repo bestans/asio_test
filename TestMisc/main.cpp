@@ -21,6 +21,6 @@ void test1() {
 	}
 }
 int main(int argc, char* argv[]) {
-	TestThreadPoolOne2One(argc, argv);
+	test_priority_scheduler();
 	return 0;
 }
