@@ -7,3 +7,6 @@ void TestThreadPoolOne2One(int argc, char* argv[]);
 
 //asio example
 void test_priority_scheduler();
+int test_timer();
+void test_async_1();
+void test_async();

@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>F:\github_code\asio-1.16.1\include;E:\vswork\TestCppAsio\TestMisc</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="async.cpp" />
     <ClCompile Include="echo_server_multiple.cpp" />
     <ClCompile Include="echo_server_one_to_one.cpp" />
     <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\executors\actor.cpp" />
@@ -155,6 +156,9 @@
     <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\timeouts\blocking_udp_client.cpp" />
     <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\timeouts\server.cpp" />
     <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\timers\time_t_timer.cpp" />
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp14\executors\async_1.cpp" />
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp14\executors\async_2.cpp" />
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp14\operations\composed_1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="test_thread_pool.cpp" />
   </ItemGroup>

@@ -25,6 +25,9 @@
     <Filter Include="源文件\asio_example\timeout">
       <UniqueIdentifier>{fb8b3d00-8f27-4a31-9ae1-5396a94f66f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\asio_example\operations">
+      <UniqueIdentifier>{5b1f5612-d3d0-4a11-8e08-4a198ee38109}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -74,6 +77,18 @@
     </ClCompile>
     <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp11\timeouts\server.cpp">
       <Filter>源文件\asio_example\timeout</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp14\operations\composed_1.cpp">
+      <Filter>源文件\asio_example\operations</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp14\executors\async_1.cpp">
+      <Filter>源文件\asio_example\excutor</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp14\executors\async_2.cpp">
+      <Filter>源文件\asio_example\excutor</Filter>
+    </ClCompile>
+    <ClCompile Include="async.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

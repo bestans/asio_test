@@ -21,6 +21,6 @@ void test1() {
 	}
 }
 int main(int argc, char* argv[]) {
-	test_priority_scheduler();
+	test_async();
 	return 0;
 }
