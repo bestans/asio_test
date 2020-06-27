@@ -5,6 +5,7 @@
 #include <map>
 #include <mutex>
 #include "test_misc.h"
+#include "asio/steady_timer.hpp"
 
 using asio::bind_executor;
 using asio::dispatch;
@@ -54,18 +55,18 @@ static int64_t add_async_op(AsyncFunc func) {
 	handler_map_[seq] = std::move(func);
 	return seq;
 }
-static void async_complete(asio::thread_pool::executor_type ctx, int64_t seq_number, AsyncResult* res) {
+static void async_complete(asio::thread_pool& ctx, int64_t seq_number, AsyncResult* res) {
 	mutex_.lock();
 	auto it = handler_map_.find(seq_number);
 	if (it == handler_map_.end()) {
 		mutex_.unlock();
 		return;
 	}
-	auto&& handlerInfo = std::move(it->second);
+	auto handlerInfo = std::move(it->second);
 	handler_map_.erase(it);
 	mutex_.unlock();
 	
-	dispatch(ctx, [=, handler=std::move(handlerInfo)] {
+	post(ctx, [=, handler=std::move(handlerInfo)] {
 			handler(res);
 		});
 }
@@ -102,8 +103,14 @@ void test_async()
 	auto seq = add_async_op([](AsyncResult* res) {
 		std::cout << "finish\n";
 		});
-	
-	async_complete(std::move(pool.get_executor()), seq, nullptr);
+	asio::steady_timer timer(pool.get_executor());
+	timer.expires_after(std::chrono::seconds(1));
+	timer.async_wait([&](const std::error_code& /*error*/) {
+		std::cout << "timer reach\n";
+		async_complete(pool, seq, nullptr);
+		});
+	std::this_thread::sleep_for(std::chrono::seconds(4));
+	async_complete(pool, seq, nullptr);
 	std::cout << "finish11\n";
 	pool.join();
 }
