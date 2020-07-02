@@ -90,6 +90,9 @@
     <ClCompile Include="async.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="pipline.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="test_misc.h">

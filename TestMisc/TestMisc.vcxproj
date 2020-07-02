@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>F:\github_code\asio-1.16.1\include;E:\vswork\TestCppAsio\TestMisc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -160,6 +161,7 @@
     <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp14\executors\async_2.cpp" />
     <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp14\operations\composed_1.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pipline.cpp" />
     <ClCompile Include="test_thread_pool.cpp" />
   </ItemGroup>
   <ItemGroup>

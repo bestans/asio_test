@@ -21,6 +21,6 @@ void test1() {
 	}
 }
 int main(int argc, char* argv[]) {
-	test_async();
+	test_dataqueue();
 	return 0;
 }
