@@ -74,3 +74,35 @@ void test_dataqueue() {
 	auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - beginTime);
 	std::cout << "elapsed time is " << elapsedTime.count() << " second" << "," << multiC << "," << multiTimes << "," << receiveC << std::endl;
 }
+
+void test_dataqueue2() {
+	auto beginTime = std::chrono::high_resolution_clock::now();
+	DataQueue<int> dataq;
+	int maxC = 1000000;
+	std::thread t1([&]() {
+		int i = 0;
+		while (++i <= maxC) {
+			dataq.Push(int(1));
+		}
+		dataq.Stop();
+		std::cout << i << std::endl;
+		});
+	int receiveC = 0;
+	int multiC = 0;
+	size_t multiTimes = 0;
+	std::thread t2([&]() {
+		std::deque<int> in;
+		while (dataq.Pop(in)) {
+			while (!in.empty()) {
+				receiveC++;
+				in.pop_front();
+			}
+		}
+		});
+	t1.join();
+	t2.join();
+
+	auto endTime = std::chrono::high_resolution_clock::now();
+	auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - beginTime);
+	std::cout << "elapsed time is " << elapsedTime.count() << " second" << "," << multiC << "," << multiTimes << "," << receiveC << std::endl;
+}

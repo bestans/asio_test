@@ -98,5 +98,8 @@
     <ClInclude Include="test_misc.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="stat_balance.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
