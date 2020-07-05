@@ -162,11 +162,14 @@
     <ClCompile Include="F:\github_code\asio-1.16.1\src\examples\cpp14\operations\composed_1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pipline.cpp" />
+    <ClCompile Include="test_balance_server.cpp" />
     <ClCompile Include="test_thread_pool.cpp" />
+    <ClCompile Include="thread_pool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stat_balance.h" />
     <ClInclude Include="test_misc.h" />
+    <ClInclude Include="thread_pool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
