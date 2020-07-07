@@ -7,30 +7,16 @@
 #include <set>
 #include <algorithm>
 
-
-int keyTimes = 0;
-int stat_times = 0;
 struct StatInfo {
 	int weight = 0;
 	int index = 0;
 	StatInfo(int w, int i) : weight(w), index(i) {
-		stat_times++;
-	}
-	~StatInfo() {
-		stat_times--;
 	}
 };
 struct StatInfoKey {
 	std::vector<std::shared_ptr<StatInfo>>* data;
 	int index;
 	StatInfoKey(std::vector<std::shared_ptr<StatInfo>>* dataArg, int i) : data(dataArg), index(i) {
-		keyTimes++;
-	}
-	StatInfoKey(StatInfoKey&& a) : data(std::move(a.data)), index(std::move(a.index)){
-		keyTimes++;
-	}
-	~StatInfoKey() {
-		keyTimes--;
 	}
 };
 typedef StatInfoKey* StatInfoKeyPtr;

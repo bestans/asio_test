@@ -7,6 +7,11 @@ namespace btd {
 		thread_(&AsioThreadContext::run, this)
 	{
 	}
+	void AsioThreadContext::Stop()
+	{
+		ctx_->stop();
+		thread_.join();
+	}
 	void AsioThreadContext::run()
 	{
 		typedef asio::io_context::executor_type ExecutorType;

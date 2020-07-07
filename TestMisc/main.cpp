@@ -63,7 +63,6 @@ void test3() {
 }
 int main(int argc, char* argv[]) {
 	srand(time(0));
-	test3();
-	std::cout << keyTimes << "," << stat_times << std::endl;
+	test_balance::TestThreadPoolOne2One(argc, argv);
 	return 0;
 }

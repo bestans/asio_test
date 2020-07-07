@@ -71,13 +71,13 @@ namespace test_balance {
 		{
 			std::cout << "do_accept:thread id:" << std::this_thread::get_id() << endl;
 			auto next_ctx = pool_.AllocContext(10);
-			acceptor_.async_accept(next_ctx.first->GetContext(), [this](std::error_code ec, tcp::socket socket)
+			acceptor_.async_accept(next_ctx.first->GetContext(), [this, ctx=next_ctx](std::error_code ec, tcp::socket socket)
 				{
 					std::cout << "async_accept:thread id:" << std::this_thread::get_id() << endl;
 					if (!ec)
 					{
 						auto sk = new session(std::move(socket));
-						asio::post(ctx2, [=] {
+						asio::post(ctx.first->GetContext(), [=] {
 							std::cout << "start session:thread id:" << std::this_thread::get_id() << endl;
 							std::shared_ptr<session>(sk)->start();
 							});
@@ -92,7 +92,7 @@ namespace test_balance {
 		std::pair<std::shared_ptr<btd::AsioThreadContext>, int> alloc_ctx_;
 	};
 	void TestThreadPoolOne2One(int argc, char* argv[]) {
-		BalanceContextPool<btd::AsioThreadContext> pool(5);
+		BalanceContextPool<btd::AsioThreadContext> pool(3);
 		server s(pool, pool.AllocContext(10), std::atoi(argv[1]));
 
 		std::this_thread::sleep_for(std::chrono::seconds(100));

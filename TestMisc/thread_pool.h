@@ -15,10 +15,7 @@ namespace btd {
 		asio::io_context& GetContext() {
 			return *ctx_;
 		}
-		void Stop() {
-			ctx_->stop();
-			thread_.join();
-		}
+		void Stop();
 	private:
 		void run();
 
