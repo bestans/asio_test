@@ -2,6 +2,10 @@
 #include "asio.hpp"
 #include "stat_balance.h"
 #include "thread_pool.h"
+#include <map>
+#include <unordered_map>
+#include "sbuffer.h"
+#include <shared_mutex>
 
 using namespace std;
 using asio::ip::tcp;
@@ -50,9 +54,26 @@ namespace test_balance {
 				});
 		}
 
+		void do_write(SBuffer& buffer)
+		{
+			std::cout << "do_write:thread id:" << std::this_thread::get_id() << endl;
+			auto self(shared_from_this());
+			asio::async_write(socket_, asio::buffer(buffer_.Data(), buffer_.Size()),
+				[this, self](std::error_code ec, std::size_t /*length*/)
+				{
+					if (!ec)
+					{
+						do_read();
+					}
+				});
+		}
+
 		tcp::socket socket_;
 		enum { max_length = 1024 };
 		char data_[max_length];
+		SBuffer buffer_;
+		std::mutex mutex_;
+		SBufferMap bufer_map_;
 	};
 
 	asio::io_context  ctx1;
@@ -71,18 +92,18 @@ namespace test_balance {
 		{
 			std::cout << "do_accept:thread id:" << std::this_thread::get_id() << endl;
 			auto next_ctx = pool_.AllocContext(10);
-			acceptor_.async_accept(next_ctx.first->GetContext(), [this, ctx=next_ctx](std::error_code ec, tcp::socket socket)
+			auto& ctx = next_ctx.first->GetContext();
+			acceptor_.async_accept(ctx, [this, &ctx, ctx_pair=std::move(next_ctx)](std::error_code ec, tcp::socket socket)
 				{
 					std::cout << "async_accept:thread id:" << std::this_thread::get_id() << endl;
 					if (!ec)
 					{
 						auto sk = new session(std::move(socket));
-						asio::post(ctx.first->GetContext(), [=] {
+						asio::post(ctx, [=] {
 							std::cout << "start session:thread id:" << std::this_thread::get_id() << endl;
 							std::shared_ptr<session>(sk)->start();
 							});
 					}
-
 					do_accept();
 				});
 		}

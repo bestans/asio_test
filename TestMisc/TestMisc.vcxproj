@@ -167,6 +167,7 @@
     <ClCompile Include="thread_pool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="sbuffer.h" />
     <ClInclude Include="stat_balance.h" />
     <ClInclude Include="test_misc.h" />
     <ClInclude Include="thread_pool.h" />

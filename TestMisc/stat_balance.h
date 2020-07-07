@@ -86,7 +86,7 @@ public:
 	}
 	std::pair<std::shared_ptr<T>, int> AllocContext(int weight) {
 		auto index = balance_.AllocIndex(weight);
-		return std::make_pair(balance_context_list_[index], index);
+		return std::move(std::make_pair(balance_context_list_[index], index));
 	}
 	const std::vector<std::shared_ptr<T>>& GetContextList() {
 		return balance_context_list_;
