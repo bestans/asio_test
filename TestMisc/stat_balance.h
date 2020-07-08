@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <algorithm>
+#include <iostream>
 
 struct StatInfo {
 	int weight = 0;
@@ -95,3 +96,30 @@ private:
 	std::vector<std::shared_ptr<T>> balance_context_list_;
 	StatBalance balance_;
 };
+
+
+class tlData {
+public:
+	//tlData() : tlData(100) {
+
+	//}
+	tlData(size_t size) {
+		ptr_ = new char[size];
+		size_ = size;
+		std::cout << "tlData:" << std::this_thread::get_id() << std::endl;
+	}
+	~tlData() {
+		delete ptr_;
+		ptr_ = nullptr;
+		size_ = 0;
+		std::cout << "~tlData:" << std::this_thread::get_id() << std::endl;
+	}
+	size_t Size() {
+		return size_;
+	}
+public:
+	char* ptr_;
+	size_t size_;
+
+};
+extern thread_local tlData tlDataValue;

@@ -61,36 +61,22 @@ void test3() {
 	std::cout << std::endl;
 	std::cout << ToString(arr) << "," << ToString(weight)  << std::endl;
 }
-class tlData {
-public:
-	//tlData() : tlData(100) {
+thread_local tlData tlDataValue(100);
 
-	//}
-	tlData(size_t size) {
-		ptr_ = new char[size];
-		size_ = size;
-		std::cout << "tlData:" << std::this_thread::get_id() << std::endl;
-	}
-	~tlData() {
-		delete ptr_;
-		ptr_ = nullptr;
-		size_ = 0;
-		std::cout << "~tlData:" << std::this_thread::get_id() << std::endl;
-	}
-	size_t Size() {
-		return size_;
-	}
-	public:
-	char* ptr_;
-	size_t size_;
-};
+std::shared_ptr<tlData> GetValue(int len) {
+	thread_local std::shared_ptr<tlData> value = std::make_shared<tlData>(len);
+	return value;
+}
+std::mutex gmutex;
 void test_thread_local() {
-	thread_local tlData value(100);
+	//thread_local tlData value(100);
 	std::vector<std::thread> threads;
 	std::cout << "begin\n";
 	for (int i = 0; i < 10; i++) {
 		threads.emplace_back([](){
-			std::cout << &value << "," << value.Size() << std::endl;
+			for (int j = 0; j < 3; j++) {
+				std::cout << j << ":" << std::this_thread::get_id() << ":" << (int64_t)(GetValue(100 + j)->ptr_) << "," << GetValue(100 + j)->Size() << std::endl;
+			}
 		});
 	}
 	for (auto& it : threads) {
