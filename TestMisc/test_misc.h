@@ -12,6 +12,7 @@ void test_async_1();
 void test_async();
 void test_pipline();
 void test_dataqueue();
+void test_thread_local();
 namespace test_balance {
 	void TestThreadPoolOne2One(int argc, char* argv[]);
 }

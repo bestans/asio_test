@@ -61,8 +61,44 @@ void test3() {
 	std::cout << std::endl;
 	std::cout << ToString(arr) << "," << ToString(weight)  << std::endl;
 }
+class tlData {
+public:
+	//tlData() : tlData(100) {
+
+	//}
+	tlData(size_t size) {
+		ptr_ = new char[size];
+		size_ = size;
+		std::cout << "tlData:" << std::this_thread::get_id() << std::endl;
+	}
+	~tlData() {
+		delete ptr_;
+		ptr_ = nullptr;
+		size_ = 0;
+		std::cout << "~tlData:" << std::this_thread::get_id() << std::endl;
+	}
+	size_t Size() {
+		return size_;
+	}
+	public:
+	char* ptr_;
+	size_t size_;
+};
+void test_thread_local() {
+	thread_local tlData value(100);
+	std::vector<std::thread> threads;
+	std::cout << "begin\n";
+	for (int i = 0; i < 10; i++) {
+		threads.emplace_back([](){
+			std::cout << &value << "," << value.Size() << std::endl;
+		});
+	}
+	for (auto& it : threads) {
+		it.join();
+	}
+}
 int main(int argc, char* argv[]) {
 	srand(time(0));
-	test_balance::TestThreadPoolOne2One(argc, argv);
+	test_thread_local();
 	return 0;
 }

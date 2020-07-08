@@ -16,7 +16,7 @@ namespace test_balance {
 	{
 	public:
 		session(tcp::socket socket)
-			: socket_(std::move(socket))
+			: socket_(std::move(socket)), buffer_(1024)
 		{
 		}
 
