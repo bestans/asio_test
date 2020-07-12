@@ -113,5 +113,14 @@
     <ClInclude Include="sbuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="net_buffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="session_handler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="buffer_pool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -167,6 +167,9 @@
     <ClCompile Include="thread_pool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="buffer_pool.h" />
+    <ClInclude Include="net_buffer.h" />
+    <ClInclude Include="session_handler.h" />
     <ClInclude Include="sbuffer.h" />
     <ClInclude Include="stat_balance.h" />
     <ClInclude Include="test_misc.h" />
