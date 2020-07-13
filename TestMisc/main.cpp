@@ -167,22 +167,10 @@ int MyCalcIndex(size_t buffer_size, int start_index_) {
 	}
 	return index;
 }
-const unsigned int tabel[32] = { 0,0,1,1,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3 };
-
-inline unsigned int log2_int_test(register unsigned int x) {
-	register unsigned int ans = 0;
-	auto srcx = x;
-	if (x >= 65536) { ans += 16; x >>= 16; }
-	if (x >= 256) { ans += 8; x >>= 8; }
-	if (x >= 16) { ans += 4; x >>= 4; }
-	auto n = ans + tabel[x];
-	auto left = (1 << n) != srcx;
-	cout << "log2:" << srcx << "," << n << "," << left << endl;
-	return n;
-}
 void foo6() {
+	bool has_left = false;
 	for (int i = 0; i < 100; i++) {
-		log2_int_test(i);
+		Log2Int(i, has_left);
 		//cout << i << "," << log2_int_test(i) << endl;
 	}
 	cout << ((size_t)1 >> 1) << endl;
